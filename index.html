@@ -112,25 +112,42 @@
               // console.log("comArray is empty");
               let digi = document.createElement("p");
               let op = document.createElement("div");
-              let incr = document.createElement("button");
-              let decr = document.createElement("button");
+              //   let incr = document.createElement("button");
+              //   let decr = document.createElement("button");
+
+              op.style.flex = "0 0 calc(50% - 0.4rem)";
+              op.style.display = "flex";
+              op.style.flexDirection = "column";
+
+              let incr = document.createElement("div");
+              incr.innerHTML = "&#x2206;";
+              incr.style.alignSelf = "center";
+              incr.style.cursor = "pointer";
+              incr.style.transform = "scale(3,1)";
+              incr.classList.add("+");
+
+              let decr = document.createElement("div");
+              decr.innerHTML = "&#x2207;";
+              decr.style.alignSelf = "center";
+              decr.style.cursor = "pointer";
+              decr.style.transform = "scale(3,1)";
+              decr.classList.add("-");
+
+              //   incr.innerHTML = "+";
+              //   decr.innerHTML = "-";
 
               userKey[i].appendChild(digi);
               digi.style.flex = "0 0 calc(50% - 0.4rem)";
               digi.style.margin = "0 auto";
+              digi.style.fontFamily = "Lucida Console";
               digi.id = i;
 
               userKey[i].appendChild(op);
-              op.style.flex = "0 0 calc(50% - 0.4rem)";
-              op.style.display = "flex";
-              op.style.flexDirection = "column";
+
               op.appendChild(incr);
               op.appendChild(decr);
 
               digi.style.fontSize = "2rem";
-
-              incr.innerHTML = "+";
-              decr.innerHTML = "-";
 
               combCon.appendChild(userKey[i]);
             }
@@ -147,13 +164,8 @@
               "click",
               handleOps
             );
-            //   forEach(element => {
-            //     element.addEventListener("click", handleOps);
-            //   });
           }
         }
-
-        //console.log("created", userKey);
       }
 
       function genRand() {
@@ -165,7 +177,9 @@
         console.log(evt.target.parentElement.previousSibling);
         let dig = evt.target.parentElement.previousSibling;
         console.log(evt.target.innerText, " at [", dig.id, "]");
-        if (evt.target.innerText === "-") {
+        console.log(evt.target.classList.value);
+
+        if (evt.target.classList.value === "-") {
           dig.innerText = decrementDigit(Number(dig.innerText));
         } else {
           dig.innerText = incrementDigit(Number(dig.innerText));
