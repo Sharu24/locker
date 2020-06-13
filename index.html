@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Combination Guesser</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let body = document.querySelector("body");
+      let display = document.createElement("div");
+      let combCon = document.createElement("div");
+      let btnStart = document.createElement("button");
+      let inst = document.createElement("div");
+      let userKey = [];
+      let userArr = [];
+      let vaultKey = [];
+      let match = 0;
+      let attemptCount = 0;
+
+      display.innerHTML = "Guess the Combination";
+      display.style.fontSize = "2rem";
+      display.style.margin = "1rem";
+      body.appendChild(display);
+
+      body.appendChild(combCon);
+
+      btnStart.innerHTML = "Start";
+      btnStart.style.fontSize = "1.6rem";
+      btnStart.style.margin = "1rem";
+      btnStart.style.padding = "0.2rem 1rem";
+      body.appendChild(btnStart);
+
+      inst.innerHTML =
+        "Instructions: Guess the combo, " +
+        "<span style='background-color:#ec0000; color:#fff'>red</span> means higher " +
+        "<span style='background-color:#ecca00'>yellow</span> means lower ";
+      inst.style.margin = "1rem";
+      inst.style.fontSize = "1.2rem";
+      body.appendChild(inst);
+
+      btnStart.addEventListener("click", genComb);
+
+      function genComb() {
+        // console.log("Starting to create");
+
+        combCon.style.margin = "1rem";
+        combCon.style.display = "flex";
+        console.log(vaultKey);
+
+        //
+        if (vaultKey.length == 6) {
+          console.log("Evaluate now");
+          display.innerHTML = " Attempt Count = " + ++attemptCount;
+
+          console.log(userArr);
+          console.log(vaultKey);
+
+          userArr.forEach(function(digit, index) {
+            if (
+              digit === vaultKey[index] &&
+              userKey[index].style.backgroundColor !== "green"
+            ) {
+              console.log("matched", index);
+              userKey[index].style.backgroundColor = "green";
+              match++;
+            } else if (digit > vaultKey[index]) {
+              console.log(">", index);
+              userKey[index].style.backgroundColor = "red";
+            } else if (digit < vaultKey[index]) {
+              console.log("<", index);
+              userKey[index].style.backgroundColor = "yellow";
+            }
+          });
+
+          console.log("Match" + match);
+          if (match === 6) {
+            display.innerHTML = "You guessed it in " + attemptCount + " tries";
+            vaultKey = [];
+            userArr = [];
+            btnStart.innerHTML = "Try another one";
+            combCon.style.display = "none";
+            match = 0;
+            attemptCount = 0;
+            userKey.forEach(key => {
+              key.style.backgroundColor = "#fff";
+              key.children[0].innerHTML = 0;
+            });
+          }
+        } //
+        else {
+          for (var i = 0; i < 6; i++) {
+            display.innerHTML = " Attempt Count = " + attemptCount;
+            btnStart.innerHTML = "Guess the Combination";
+            //   console.log("creating", userKey);
+            if (!userKey[i]) {
+              combCon.style.display = "flex";
+              // console.log("comArray is empty");
+              userKey[i] = document.createElement("div");
+              userKey[i].style.border = "1px solid black";
+              userKey[i].style.flex = "0 0 calc(16.5% - 1px)";
+              userKey[i].style.display = "flex";
+
+              // console.log("comArray is empty");
+              let digi = document.createElement("p");
+              let op = document.createElement("div");
+              let incr = document.createElement("button");
+              let decr = document.createElement("button");
+
+              userKey[i].appendChild(digi);
+              digi.style.flex = "0 0 calc(50% - 0.4rem)";
+              digi.style.margin = "0 auto";
+              digi.id = i;
+
+              userKey[i].appendChild(op);
+              op.style.flex = "0 0 calc(50% - 0.4rem)";
+              op.style.display = "flex";
+              op.style.flexDirection = "column";
+              op.appendChild(incr);
+              op.appendChild(decr);
+
+              digi.style.fontSize = "2rem";
+
+              incr.innerHTML = "+";
+              decr.innerHTML = "-";
+
+              combCon.appendChild(userKey[i]);
+            }
+
+            userKey[i].children[0].innerHTML = userArr[i] = 0;
+            vaultKey[i] = genRand();
+
+            //   console.log(userKey[i].children[1].children[0]);
+            userKey[i].children[1].children[0].addEventListener(
+              "click",
+              handleOps
+            );
+            userKey[i].children[1].children[1].addEventListener(
+              "click",
+              handleOps
+            );
+            //   forEach(element => {
+            //     element.addEventListener("click", handleOps);
+            //   });
+          }
+        }
+
+        //console.log("created", userKey);
+      }
+
+      function genRand() {
+        return Math.floor(Math.random() * 9);
+      }
+
+      function handleOps(evt) {
+        // console.log(evt.target.parentElement.parentElement.parentElement);
+        console.log(evt.target.parentElement.previousSibling);
+        let dig = evt.target.parentElement.previousSibling;
+        console.log(evt.target.innerText, " at [", dig.id, "]");
+        if (evt.target.innerText === "-") {
+          dig.innerText = decrementDigit(Number(dig.innerText));
+        } else {
+          dig.innerText = incrementDigit(Number(dig.innerText));
+        }
+        userArr[dig.id] = Number(dig.innerText);
+        console.log(userArr);
+        console.log(vaultKey);
+      }
+
+      function decrementDigit(dig) {
+        console.log("Decrement - ", dig);
+
+        if (isNaN(dig)) {
+          console.log("Not a Number");
+        } else {
+          dig === 0 ? (dig = 1) : "";
+          return --dig;
+        }
+      }
+
+      function incrementDigit(dig) {
+        console.log("Increment - ", dig);
+
+        if (isNaN(dig)) {
+          console.log("Not a Number");
+        } else {
+          dig === 9 ? (dig = 8) : "";
+          return ++dig;
+        }
+      }
+    </script>
+  </body>
+</html>
