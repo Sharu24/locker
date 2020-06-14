@@ -105,7 +105,7 @@
               combCon.style.display = "flex";
               // console.log("comArray is empty");
               userKey[i] = document.createElement("div");
-              userKey[i].style.border = "1px solid black";
+              userKey[i].style.border = "5px inset grey";
               userKey[i].style.flex = "0 0 calc(16.5% - 1px)";
               userKey[i].style.display = "flex";
 
@@ -115,39 +115,35 @@
               //   let incr = document.createElement("button");
               //   let decr = document.createElement("button");
 
+              digi.style.flex = "0 0 calc(50% - 0.4rem)";
+              digi.style.margin = "0 auto";
+              digi.style.fontFamily = "Lucida Console";
+              digi.style.fontSize = "6rem";
+              digi.id = i;
+              userKey[i].appendChild(digi);
+
               op.style.flex = "0 0 calc(50% - 0.4rem)";
               op.style.display = "flex";
               op.style.flexDirection = "column";
+              op.style.justifyContent = "space-around";
 
               let incr = document.createElement("div");
               incr.innerHTML = "&#x2206;";
               incr.style.alignSelf = "center";
               incr.style.cursor = "pointer";
-              incr.style.transform = "scale(3,1)";
+              incr.style.transform = "scale(2,4)";
               incr.classList.add("+");
+              op.appendChild(incr);
 
               let decr = document.createElement("div");
               decr.innerHTML = "&#x2207;";
               decr.style.alignSelf = "center";
               decr.style.cursor = "pointer";
-              decr.style.transform = "scale(3,1)";
+              decr.style.transform = "scale(2,4)";
               decr.classList.add("-");
-
-              //   incr.innerHTML = "+";
-              //   decr.innerHTML = "-";
-
-              userKey[i].appendChild(digi);
-              digi.style.flex = "0 0 calc(50% - 0.4rem)";
-              digi.style.margin = "0 auto";
-              digi.style.fontFamily = "Lucida Console";
-              digi.id = i;
-
-              userKey[i].appendChild(op);
-
-              op.appendChild(incr);
               op.appendChild(decr);
 
-              digi.style.fontSize = "2rem";
+              userKey[i].appendChild(op);
 
               combCon.appendChild(userKey[i]);
             }
